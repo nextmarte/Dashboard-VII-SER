@@ -1,0 +1,9 @@
+name: "Acompanhamento das Inscrições VII SER"
+output_dir: "docs"
+navbar:
+  title: "Acompanhamento das Inscrições VII SER"
+  left:
+    - text: "Home"
+      href: index.html
+output:
+  html_document:
