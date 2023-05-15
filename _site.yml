@@ -1,0 +1,6 @@
+name: "Acompanhamento das Inscrições VII SER"
+output_dir: "docs"
+navbar:
+  title: "Data Visualisation with R"
+output:
+  html_document:
