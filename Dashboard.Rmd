@@ -1,0 +1,88 @@
+---
+title: "Acompanhamento das Inscrições VII SER"
+author: "Marcus"
+output: html_document
+---
+
+
+```{r}
+#| echo: false
+#| include: false
+
+library(timetk)
+library(tidyverse)
+library(xts)
+library(plotly)
+library(gsheet)
+
+
+
+inscritos <- gsheet2tbl("https://docs.google.com/spreadsheets/d/14YWebKqKK5pBFeEIgaguPSJCZJHiV0jr960TffKKPbU/edit?usp=sharing")
+
+inscritos$Data <- as.Date(inscritos$`Carimbo de data/hora`, format = "%d/%m/%Y")
+
+
+
+tabela_contagem <- inscritos %>%
+  group_by(Data) %>%
+  summarise(Inscritos = n())  
+
+
+
+dadossemanais <- inscritos %>% 
+  mutate(Semana = lubridate::floor_date(Data, "week"))
+
+
+contagem_semanal <- dadossemanais %>% 
+  group_by(Semana,Category) %>% 
+  summarise(Total_Inscritos = n())
+
+
+
+
+graph <- ggplot(contagem_semanal) +
+  aes(x = Semana, fill = Category, weight = Total_Inscritos) +
+  geom_bar() +
+  scale_fill_hue(direction = 1) +
+  labs(
+    x = "Semana",
+    y = "Contagem de inscritos",
+    fill = "Categoria"
+  )+
+  theme(
+    legend.position = "center",
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
+  ) +
+  ggtitle("VII SER - Inscritos por semana")
+
+
+
+
+total <- sum(contagem_semanal$Total_Inscritos)
+
+
+graph2 <- ggplot(contagem_semanal) +
+  aes(x = Category, y = Total_Inscritos, fill = Category) +
+  geom_col() +
+  scale_fill_hue(direction = 1) +
+  labs(title = "VII SER - Inscritos por categoria",
+       x = "Categorias",
+       y = "Contagem de inscritos",
+    fill = "Categoria")+
+  theme(
+    legend.position = "center",
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
+  ) 
+
+
+```
+
+# Até hoje `r Sys.Date()` temos **`r total` inscritos** {style="color:red"}
+
+```{r, echo=FALSE}
+plotly::ggplotly(graph)
+```
+
+```{r, echo=FALSE}
+plotly::ggplotly(graph2)
+```
