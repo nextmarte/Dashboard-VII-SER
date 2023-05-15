@@ -4,6 +4,6 @@ navbar:
   title: "Acompanhamento das Inscrições VII SER"
   left:
     - text: "Home"
-      href: Dashboard.html
+      href: index.html
 output:
   html_document:
