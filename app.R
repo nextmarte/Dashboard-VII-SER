@@ -1,7 +1,5 @@
 library(shiny)
-library(timetk)
-library(tidyverse)
-library(xts)
+library(timetk)
 library(plotly)
 library(gsheet)
 
